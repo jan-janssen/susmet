@@ -1,0 +1,7 @@
+format: jb-book
+root: README
+chapters:
+- file: 1-electronic-convergence.ipynb
+- file: 2-dft-energy-precision.ipynb
+- file: 3-ev-curve.ipynb
+- file: 4-phonons.ipynb

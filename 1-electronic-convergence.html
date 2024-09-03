@@ -392,7 +392,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "13cfcff3d04745c68e6095c136ec4d5a", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "98ec78f18593499e944e7d67767085e1"}</script></div>
 </div>
 <section id="calculation">
 <h2>Calculation<a class="headerlink" href="#calculation" title="Link to this heading">#</a></h2>
@@ -405,7 +405,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "dcf55097a97a43fabca98957d936e21b", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "6b483fe9dd0946cd91cec6c18c9281d9"}</script></div>
 </div>
 <p>In the second step, the primitive atomistic structure for Aluminium (Al) is created. In pyiron this is achieved using the <code class="docutils literal notranslate"><span class="pre">create.structure.ase.bulk()</span></code> function of the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object. To help with interactive development, python provides <code class="docutils literal notranslate"><span class="pre">tab</span></code> completion, so by typing <code class="docutils literal notranslate"><span class="pre">pr.create.</span></code> and pressing <code class="docutils literal notranslate"><span class="pre">tab</span></code> you get a list of available objects which can be created from the <code class="docutils literal notranslate"><span class="pre">Project</span></code>. The advantage of creating these objects from the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object is that the path of the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object is then automatically used for data storage, so the <code class="docutils literal notranslate"><span class="pre">structure</span></code> object directly knows it should write any data to the <code class="docutils literal notranslate"><span class="pre">path</span></code> of the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object. You can print the path of the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object using <code class="docutils literal notranslate"><span class="pre">pr.path</span></code>.</p>
 <div class="cell docutils container">
@@ -428,7 +428,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "91010a979dcf44409ccaea12da6f30e7", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "0234615ff1d24d318ae7c1d0c42f2df8"}</script></div>
 </div>
 <p>After the creation of the <code class="docutils literal notranslate"><span class="pre">structure</span></code> object, the SPHInX <code class="docutils literal notranslate"><span class="pre">job</span></code> object can be created using the same <code class="docutils literal notranslate"><span class="pre">create()</span></code> function of the project object. After the creation of the <code class="docutils literal notranslate"><span class="pre">job</span></code> object, the <code class="docutils literal notranslate"><span class="pre">structure</span></code> object is assigned. Followed by the specification of the k-point mesh using the <code class="docutils literal notranslate"><span class="pre">set_kpoints()</span></code> function, the energy cutoff using the <code class="docutils literal notranslate"><span class="pre">set_encut()</span></code> function and the electronic convergence criteria using the <code class="docutils literal notranslate"><span class="pre">set_convergence_precision()</span></code> function. Finally, the computational resources can be assigned. In this case only a single computational core is selected, but typically such a calculation would be submitted to a high performance computing (HPC) cluster. Up to this point no data was written to the file system. Only when the <code class="docutils literal notranslate"><span class="pre">run()</span></code> function of the <code class="docutils literal notranslate"><span class="pre">job</span></code> object is executed <code class="docutils literal notranslate"><span class="pre">pyiron</span></code> writes the input files for the <code class="docutils literal notranslate"><span class="pre">SPHInX</span></code> DFT simulation code, calls the simulation code and parses the output of the calculation.</p>
 <div class="cell docutils container">
@@ -452,7 +452,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job spx was saved and received the ID: 1827
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job spx was saved and received the ID: 1
 </pre></div>
 </div>
 </div>
@@ -470,7 +470,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/janssen/mambaforge/lib/python3.12/site-packages/pyiron_base/interfaces/lockable.py:59: LockedWarning: __setitem__ called on &lt;class &#39;pyiron_atomistics.sphinx.input_writer.Group&#39;&gt;, but object is locked!
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/srv/conda/envs/notebook/lib/python3.11/site-packages/pyiron_base/interfaces/lockable.py:59: LockedWarning: __setitem__ called on &lt;class &#39;pyiron_atomistics.sphinx.input_writer.Group&#39;&gt;, but object is locked!
   warnings.warn(
 </pre></div>
 </div>
@@ -504,12 +504,6 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
-&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
-/tmp/ipykernel_32100/2630766026.py:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
-  plt.ylabel(&quot;$\Delta$ Energy (eV)&quot;)
-</pre></div>
-</div>
 <img alt="_images/0d2e148b96f99bf94f14eca7733d672c62938e374053af5724dd4483bb8c40a2.png" src="_images/0d2e148b96f99bf94f14eca7733d672c62938e374053af5724dd4483bb8c40a2.png" />
 </div>
 </div>
@@ -563,17 +557,17 @@ document.write(`
   <tbody>
     <tr>
       <th>0</th>
-      <td>1827</td>
+      <td>1</td>
       <td>finished</td>
       <td>Al</td>
       <td>spx</td>
       <td>/spx</td>
       <td>None</td>
-      <td>/home/janssen/notebooks/2024/2024-09-02-susmet-lecture/sphinx/</td>
-      <td>2024-09-03 12:30:12.018873</td>
-      <td>2024-09-03 12:30:14.742192</td>
+      <td>/home/jovyan/dft/sphinx/</td>
+      <td>2024-09-03 16:04:14.729280</td>
+      <td>2024-09-03 16:04:16.997263</td>
       <td>2.0</td>
-      <td>pyiron@cmpc06#1</td>
+      <td>pyiron@jupyter-pyiron-2dsusmet-5fthermodynamics-2dxhwp6iwl#1</td>
       <td>Sphinx</td>
       <td>3.1</td>
       <td>None</td>

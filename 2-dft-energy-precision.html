@@ -1,0 +1,815 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Planewave Energy Cut-off and Kpoint Mesh &#8212; DFT Lecture</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '2-dft-energy-precision';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Energy Volume Curve" href="3-ev-curve.html" />
+    <link rel="prev" title="Electronic Convergence" href="1-electronic-convergence.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">DFT Lecture</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="README.html">
+                    Density Functional Theory Lecture
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1-electronic-convergence.html">Electronic Convergence</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Planewave Energy Cut-off and Kpoint Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3-ev-curve.html">Energy Volume Curve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4-phonons.html">Free Energies</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/jan-janssen/susmet/master?urlpath=lab/tree/2-dft-energy-precision.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/2-dft-energy-precision.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Planewave Energy Cut-off and Kpoint Mesh</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planewave-energy-cut-off">Planewave Energy Cut-off</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-point-mesh">K-point Mesh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supercell-size">Supercell Size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="planewave-energy-cut-off-and-kpoint-mesh">
+<h1>Planewave Energy Cut-off and Kpoint Mesh<a class="headerlink" href="#planewave-energy-cut-off-and-kpoint-mesh" title="Link to this heading">#</a></h1>
+<p>After the first tutorial covered the electronic convergence of a DFT calculation, the next step is to get a better understanding of the energy cut-off and kpoint mesh, the two primary convergence parameters of a plane wave DFT simulation code. The electronic smearing <span class="math notranslate nohighlight">\(\sigma\)</span> would be a third parameter and the density of the mesh for sampling the charge desity a fourth one, but these two are not considered at this point.</p>
+<p>Following the first tutorial again the <a class="reference external" href="https://sxrepo.mpie.de">SPHInX</a> DFT code is used in combination with <a class="reference external" href="https://pyiron.org">pyiron.org</a> workflow framework. The installation of these software packages is explained in the first tutorial. In analogy to the first tutorial, also the second tutorial starts by importing the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object in addition to <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> and <code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pyiron_atomistics</span> <span class="kn">import</span> <span class="n">Project</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "dea87015363f44358364c1a689ec7900", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>A new <code class="docutils literal notranslate"><span class="pre">Project</span></code> object is created named <code class="docutils literal notranslate"><span class="pre">convergence</span></code> to separate the calculation from the first and the second tutorial. Any remaining calculation in the <code class="docutils literal notranslate"><span class="pre">convergence</span></code> folder are removed using the <code class="docutils literal notranslate"><span class="pre">remove_jobs()</span></code> function, to provide a fresh start for every execution of the notebook.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;convergence&quot;</span><span class="p">)</span>
+<span class="n">pr</span><span class="o">.</span><span class="n">remove_jobs</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silently</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "3dad144e7918430893d4032e4862c6d2", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>From the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object an Aluminium bulk structure is again created using the <code class="docutils literal notranslate"><span class="pre">create.structure.ase.bulk()</span></code> function. In contrast to the previous example which used a primitive cell, a cubic cell is created using the <code class="docutils literal notranslate"><span class="pre">cubic=True</span></code> parameter. Afterwards the structure is again visualized using the <code class="docutils literal notranslate"><span class="pre">plot3d()</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">structure_Al</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">ase</span><span class="o">.</span><span class="n">bulk</span><span class="p">(</span><span class="s2">&quot;Al&quot;</span><span class="p">,</span> <span class="n">cubic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">structure_Al</span><span class="o">.</span><span class="n">plot3d</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "cc1d29e8b7594f268ba0f15c6f7f4576", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>While the primitive cell of Aluminium by definition only includes a single Aluminium atom, the cubic cell contains four Aluminium atoms.</p>
+<section id="planewave-energy-cut-off">
+<h2>Planewave Energy Cut-off<a class="headerlink" href="#planewave-energy-cut-off" title="Link to this heading">#</a></h2>
+<p>While the SPHInX DFT simulation code internally defines the planewave energy cut-off in Hartree pyiron consistently uses electron volt (eV) for the placewave energy cut-off for all DFT simulation codes and also the energies calculated. Beyond eV pyiron uses Angstrom for length, Giga Pascal for pressures and stresses, Kelvin for temperature, femtoseconds for time and atomic mass units for the masses. A full list of the internal units in pyiron is included in the <a class="reference external" href="https://pyiron.readthedocs.io/en/latest/source/faq.html#what-units-does-pyiron-use">FAQ</a>.</p>
+<p>For testing different planewave energy cut-offs a <code class="docutils literal notranslate"><span class="pre">linspace()</span></code> is created ranging from 100eV to 600eV in a total of 21 steps which results in a step size of 25eV.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">encut_lst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">600</span><span class="p">,</span><span class="mi">21</span><span class="p">)</span>
+<span class="n">encut_lst</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([100., 125., 150., 175., 200., 225., 250., 275., 300., 325., 350.,
+       375., 400., 425., 450., 475., 500., 525., 550., 575., 600.])
+</pre></div>
+</div>
+</div>
+</div>
+<p>For each planewave energy cut-off a new SPHInX job object is created with the name consisting of <code class="docutils literal notranslate"><span class="pre">spx_Al_encut_</span></code> and the value of the planewave energy cut-off. The rest follows the same structure as introduced in the previous tutorial. The <code class="docutils literal notranslate"><span class="pre">structure</span></code> object is assigned to the SPHInX job object, the kpoint mesh is set to <span class="math notranslate nohighlight">\(2\times2\times2\)</span> and the number of CPU cores is set to one as before. In contrast to the previous example the individual calculation are now nested in a for loop with the total energy being appended to the <code class="docutils literal notranslate"><span class="pre">energy_tot_encut_lst</span></code> at the end of each calculation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">energy_tot_encut_lst</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">encut</span> <span class="ow">in</span> <span class="n">encut_lst</span><span class="p">:</span>
+    <span class="n">job_Al_conv</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">Sphinx</span><span class="p">(</span><span class="s2">&quot;spx_Al_encut_</span><span class="si">{:.0f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">encut</span><span class="p">))</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure_Al</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">set_kpoints</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">set_encut</span><span class="p">(</span><span class="n">encut</span><span class="p">)</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">cores</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">energy_tot_encut_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">job_Al_conv</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">generic</span><span class="o">.</span><span class="n">energy_tot</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job spx_Al_encut_100 was saved and received the ID: 1828
+The job spx_Al_encut_125 was saved and received the ID: 1829
+The job spx_Al_encut_150 was saved and received the ID: 1830
+The job spx_Al_encut_175 was saved and received the ID: 1831
+The job spx_Al_encut_200 was saved and received the ID: 1832
+The job spx_Al_encut_225 was saved and received the ID: 1833
+The job spx_Al_encut_250 was saved and received the ID: 1834
+The job spx_Al_encut_275 was saved and received the ID: 1835
+The job spx_Al_encut_300 was saved and received the ID: 1836
+The job spx_Al_encut_325 was saved and received the ID: 1837
+The job spx_Al_encut_350 was saved and received the ID: 1838
+The job spx_Al_encut_375 was saved and received the ID: 1839
+The job spx_Al_encut_400 was saved and received the ID: 1840
+The job spx_Al_encut_425 was saved and received the ID: 1841
+The job spx_Al_encut_450 was saved and received the ID: 1842
+The job spx_Al_encut_475 was saved and received the ID: 1843
+The job spx_Al_encut_500 was saved and received the ID: 1844
+The job spx_Al_encut_525 was saved and received the ID: 1845
+The job spx_Al_encut_550 was saved and received the ID: 1846
+The job spx_Al_encut_575 was saved and received the ID: 1847
+The job spx_Al_encut_600 was saved and received the ID: 1848
+</pre></div>
+</div>
+</div>
+</div>
+<p>This example highlights a second benefit of a workflow framework like pyiron, iterating over a number of different parameters in the Python programming language is very simple and with the pyiron workflow framework setting up a DFT simulation is as easy as calling a python function. While a loop in the order of 20 configurations can still be managed on the file system or with shell scripts, the same task becomes much more challenging with hundreds or thousands of calculation, espeically when some of these calculation do not converge.</p>
+<p>In analogy to the previous tutorial, the change of energy is plotted over the plane wave energy cutoff. The energy converges monotonously as increasing number of plane waves always results in lower energies. Still some DFT simulation codes like VASP subtract the energy of a single atom in Vaccum from the calculated energy, which can lead to non-monotonous convergence.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">encut_lst</span><span class="p">,</span> <span class="n">energy_tot_encut_lst</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Energy Cutoff (eV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Energy (eV)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Energy (eV)&#39;)
+</pre></div>
+</div>
+<img alt="_images/d220bdc893542260e932cca27223c2a5060e1ac4ca0f0ee532e04e771660ea91.png" src="_images/d220bdc893542260e932cca27223c2a5060e1ac4ca0f0ee532e04e771660ea91.png" />
+</div>
+</div>
+<p>By plotting the convergence of the absolute difference to energy at maximum planewave energy cutoff on a semi-logarthimic plot, it becomes clear that convergence can only be defined relative to a specific planewave energy cutoff, not in an absolute way.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">encut_lst</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">energy_tot_encut_lst</span><span class="p">)</span><span class="o">-</span><span class="n">energy_tot_encut_lst</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Energy Cutoff (eV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$\Delta$ Energy (eV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+/tmp/ipykernel_32770/1937516810.py:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+  plt.ylabel(&quot;$\Delta$ Energy (eV)&quot;)
+</pre></div>
+</div>
+<img alt="_images/e6b5c7f67f8c9126ef536ce95f3118c0fe9a328949dd3fc0201014fc1bf6b44e.png" src="_images/e6b5c7f67f8c9126ef536ce95f3118c0fe9a328949dd3fc0201014fc1bf6b44e.png" />
+</div>
+</div>
+<p>For the following calculations a planewave energy cut-off of 300eV is chosen, primarily for computational efficiency. In addition, it is important to mention that the planewave energy cut-off is not universal, it has to be tested for any element and even alloys can have different convergence behaviour depending on their electronic structure. So careful convergence tests should be the start of every DFT calculation.</p>
+</section>
+<section id="k-point-mesh">
+<h2>K-point Mesh<a class="headerlink" href="#k-point-mesh" title="Link to this heading">#</a></h2>
+<p>While the planewave energy cut-off limits the number of planewaves to resolve the electronic structure, the k-point mesh represents the sampling in reciprocal space. The finer the k-point mesh the less interpolation is required between the individual k-points to resolve the electronic structure. For the tutorial a kpoint mesh is choosen starting from the Gamma point <span class="math notranslate nohighlight">\(1\times1\times1\)</span> up to a mesh with <span class="math notranslate nohighlight">\(10\times10\times10\)</span> k-points.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kpoint_dim_lst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">kpoint_dim_lst</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10])
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is important to mention that a <span class="math notranslate nohighlight">\(10\times10\times10\)</span> k-point mesh typically does not result in 1000 k-points as the crystal symmetry is leveraged to choose high symmetry points and reduce the number of k-points required to calculate. Typically the method from <a class="reference external" href="https://doi.org/10.1103/PhysRevB.13.5188">Monkhorst and Pack</a> is used to choose high symmetry points.</p>
+<p>Again a for-loop is used to iterate over the k-point mesh dimensions and create a SPHInX calculation for each of those. The rest remains the same to compared to the for-loop to analyse the planewave energy cut-off convergence above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">energy_tot_kpoint_lst</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">kpoint</span> <span class="ow">in</span> <span class="n">kpoint_dim_lst</span><span class="p">:</span>
+    <span class="n">job_Al_conv</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">Sphinx</span><span class="p">(</span><span class="s2">&quot;spx_Al_kpoint_</span><span class="si">{:.0f}</span><span class="s2">_</span><span class="si">{:.0f}</span><span class="s2">_</span><span class="si">{:.0f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kpoint</span><span class="p">,</span> <span class="n">kpoint</span><span class="p">,</span> <span class="n">kpoint</span><span class="p">))</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure_Al</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">set_kpoints</span><span class="p">([</span><span class="n">kpoint</span><span class="p">,</span><span class="n">kpoint</span><span class="p">,</span><span class="n">kpoint</span><span class="p">])</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">set_encut</span><span class="p">(</span><span class="mf">300.0</span><span class="p">)</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">cores</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">energy_tot_kpoint_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">job_Al_conv</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">generic</span><span class="o">.</span><span class="n">energy_tot</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job spx_Al_kpoint_1_1_1 was saved and received the ID: 1849
+The job spx_Al_kpoint_2_2_2 was saved and received the ID: 1850
+The job spx_Al_kpoint_3_3_3 was saved and received the ID: 1851
+The job spx_Al_kpoint_4_4_4 was saved and received the ID: 1852
+The job spx_Al_kpoint_5_5_5 was saved and received the ID: 1853
+The job spx_Al_kpoint_6_6_6 was saved and received the ID: 1854
+The job spx_Al_kpoint_7_7_7 was saved and received the ID: 1855
+The job spx_Al_kpoint_8_8_8 was saved and received the ID: 1856
+The job spx_Al_kpoint_9_9_9 was saved and received the ID: 1857
+The job spx_Al_kpoint_10_10_10 was saved and received the ID: 1858
+</pre></div>
+</div>
+</div>
+</div>
+<p>In contrast to the monotonous convergence of the total energy with increasing planewave energy cut-off, the k-point mesh convergence is not as systematic. Rather it fluctuates around the convergened number at maximum k-point mesh. For simplicity the total number of k-points on the x-axis is just calculated as the product of the k-points in each dimension, not taking into account the reduction in required calculation based on the consideration of the crystal symmetry.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">k</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kpoint_dim_lst</span><span class="p">],</span> <span class="n">energy_tot_kpoint_lst</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Total Number of Kpoints&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Energy (eV)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Energy (eV)&#39;)
+</pre></div>
+</div>
+<img alt="_images/5ed5bc762d07da280d3a3ceee0f4b58dacf09f6d6b073c24cb5397e76923e11e.png" src="_images/5ed5bc762d07da280d3a3ceee0f4b58dacf09f6d6b073c24cb5397e76923e11e.png" />
+</div>
+</div>
+<p>Once more following the same trick, the convergence can be analysed more efficiently by comparing to the energy at maximum k-point mesh and subtract it from the previous energies and compute the absolute difference. The relative convergence is plotted on a semi-logarithmic scale.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">k</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kpoint_dim_lst</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">energy_tot_kpoint_lst</span><span class="p">)</span><span class="o">-</span><span class="n">energy_tot_kpoint_lst</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Total Number of Kpoints&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$\Delta$ Energy (eV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+/tmp/ipykernel_32770/2491894759.py:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+  plt.ylabel(&quot;$\Delta$ Energy (eV)&quot;)
+</pre></div>
+</div>
+<img alt="_images/1e51022fe05b7baafe11126b25381514913da1a91cfe99110750ecdbd1c02e92.png" src="_images/1e51022fe05b7baafe11126b25381514913da1a91cfe99110750ecdbd1c02e92.png" />
+</div>
+</div>
+<p>As the inclusion of the Gamma point drastically impacts the convergence behaviour, the convergence is typically analysed by either considering only the odd or only the even numbers of k-points, e.g. those who include the Gamma point or not. By coloring the odd and even k-points separately this can be demonstrated for the current example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">k</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kpoint_dim_lst</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">energy_tot_kpoint_lst</span><span class="p">)</span><span class="o">-</span><span class="n">energy_tot_kpoint_lst</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">k</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kpoint_dim_lst</span><span class="p">][::</span><span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">energy_tot_kpoint_lst</span><span class="p">)</span><span class="o">-</span><span class="n">energy_tot_kpoint_lst</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;with gamma point&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">k</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kpoint_dim_lst</span><span class="p">][</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">energy_tot_kpoint_lst</span><span class="p">)</span><span class="o">-</span><span class="n">energy_tot_kpoint_lst</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;without gamma point&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Total Number of Kpoints&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$\Delta$ Energy (eV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:5: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+&lt;&gt;:5: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+/tmp/ipykernel_32770/2888601850.py:5: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+  plt.ylabel(&quot;$\Delta$ Energy (eV)&quot;)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f9540faf8c0&gt;
+</pre></div>
+</div>
+<img alt="_images/ecb35ef898410869a439daf796432a1d3a27747cf2051a1bc61e406962fd34d0.png" src="_images/ecb35ef898410869a439daf796432a1d3a27747cf2051a1bc61e406962fd34d0.png" />
+</div>
+</div>
+</section>
+<section id="supercell-size">
+<h2>Supercell Size<a class="headerlink" href="#supercell-size" title="Link to this heading">#</a></h2>
+<p>The previous supercells were both cubic, so the k-point mesh in reciprocal space was also chosen in a way to have the same number of k-points in each reciprocal dimension. Still not all simulation cells are cubic. For the example of a simulation cell which is doubled in z-direction the number of k-points in this direction can be reduced by a factor 1/2. For illustration the resulting supercell is visualized below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">structure_Al</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">plot3d</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "8c5c40559764456ba1e6fda1d8eaa975", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>In analogy to the previous k-point mesh convergence test above the loop iterates over the number of kpoints in one dimension. For this test only the even number of kpoints are considered, so the number of k-points for the z-dimension can be set to be half the number of kpoints in the other dimensions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">energy_tot_kpoint_big_lst</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">kpoint</span> <span class="ow">in</span> <span class="n">kpoint_dim_lst</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]:</span>
+    <span class="n">job_Al_conv</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">Sphinx</span><span class="p">(</span><span class="s2">&quot;spx_Al_kpoint_big_</span><span class="si">{:.0f}</span><span class="s2">_</span><span class="si">{:.0f}</span><span class="s2">_</span><span class="si">{:.0f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kpoint</span><span class="p">,</span> <span class="n">kpoint</span><span class="p">,</span> <span class="n">kpoint</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure_Al</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">set_kpoints</span><span class="p">([</span><span class="n">kpoint</span><span class="p">,</span><span class="n">kpoint</span><span class="p">,</span><span class="n">kpoint</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">set_encut</span><span class="p">(</span><span class="mf">300.0</span><span class="p">)</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">cores</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">job_Al_conv</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">energy_tot_kpoint_big_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">job_Al_conv</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">generic</span><span class="o">.</span><span class="n">energy_tot</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job spx_Al_kpoint_big_2_2_1 was saved and received the ID: 1859
+The job spx_Al_kpoint_big_4_4_2 was saved and received the ID: 1860
+The job spx_Al_kpoint_big_6_6_3 was saved and received the ID: 1861
+The job spx_Al_kpoint_big_8_8_4 was saved and received the ID: 1862
+The job spx_Al_kpoint_big_10_10_5 was saved and received the ID: 1863
+</pre></div>
+</div>
+</div>
+</div>
+<p>By visualizing the convergence in comparison to the convergence of the smaller supercell which was not repeated in z-direction, the reduced k-point mesh in z-direction leads to the same result. The minor deviations can be accounted to the final reference not being identical.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">k</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kpoint_dim_lst</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">energy_tot_kpoint_lst</span><span class="p">)</span><span class="o">-</span><span class="n">energy_tot_kpoint_lst</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;cubic cell&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">k</span><span class="o">**</span><span class="mi">3</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kpoint_dim_lst</span><span class="p">][</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">energy_tot_kpoint_big_lst</span><span class="p">)</span><span class="o">-</span><span class="n">energy_tot_kpoint_big_lst</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;extended cell&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Total Number of Kpoints&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$\Delta$ Energy (eV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+&lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+/tmp/ipykernel_32770/2931551902.py:4: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+  plt.ylabel(&quot;$\Delta$ Energy (eV)&quot;)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f9541226330&gt;
+</pre></div>
+</div>
+<img alt="_images/6e86757d6244f577d1c166ba2662e1b8a4261bb70ed3cd2fdd52846235f5b5ad.png" src="_images/6e86757d6244f577d1c166ba2662e1b8a4261bb70ed3cd2fdd52846235f5b5ad.png" />
+</div>
+</div>
+<p>As the k-point mesh is defined in reciprocal space, you can achieve the same level of precision by doubling the simulation cell in one direction and setting the k-point mesh to half. Still the additional interaction of the electrons results in this simulation being less efficient, so the computationally most efficient choice for a DFT simulation is choosing the simulation cell as small as possible, but that might restrict the scientific complexity.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>While the accuracy of most DFT calculation is limited by the choice of DFT functional, the precision can also be the dominant source of uncertainty. The precision is primarily related to the planewave energy cut-off and k-point mesh.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="1-electronic-convergence.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Electronic Convergence</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="3-ev-curve.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Energy Volume Curve</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planewave-energy-cut-off">Planewave Energy Cut-off</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-point-mesh">K-point Mesh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supercell-size">Supercell Size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jan Janssen
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

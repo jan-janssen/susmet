@@ -1,0 +1,715 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Electronic Convergence &#8212; DFT Lecture</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '1-electronic-convergence';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Planewave Energy Cut-off and Kpoint Mesh" href="2-dft-energy-precision.html" />
+    <link rel="prev" title="Density Functional Theory Lecture" href="README.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="README.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">DFT Lecture</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="README.html">
+                    Density Functional Theory Lecture
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Electronic Convergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2-dft-energy-precision.html">Planewave Energy Cut-off and Kpoint Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3-ev-curve.html">Energy Volume Curve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4-phonons.html">Free Energies</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/jan-janssen/susmet/master?urlpath=lab/tree/1-electronic-convergence.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/1-electronic-convergence.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Electronic Convergence</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation">Calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis">Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#job-management">Job Management</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="electronic-convergence">
+<h1>Electronic Convergence<a class="headerlink" href="#electronic-convergence" title="Link to this heading">#</a></h1>
+<p>In contrast to simulation with interatomic potentials which only consider the interaction of atoms, density functional theory (DFT) leverages the density of electrons to determine the forces between atoms and the energy of a simulation cell. Consequently, the careful threatment of the electronic convergence is essential for high precision DFT calculation. In the following the <a class="reference external" href="https://sxrepo.mpie.de">SPHInX</a> DFT code is used in combination with <a class="reference external" href="https://pyiron.org">pyiron.org</a> workflow framework to develop a practical understanding of DFT simulation.</p>
+<p>Both codes are available as open-source software for the Linux operation system and can be installed from the <code class="docutils literal notranslate"><span class="pre">conda</span></code> package manager using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">pyiron_atomistics</span> <span class="n">sphinxdft</span> <span class="n">sphinxdft</span><span class="o">-</span><span class="n">data</span> <span class="n">pyiron</span><span class="o">-</span><span class="n">data</span> <span class="n">nglview</span>
+</pre></div>
+</div>
+<p>This command installs both packages, the required resources including the pseudo potentials and the <code class="docutils literal notranslate"><span class="pre">nglview</span></code> package to visualise atomistic structures in the jupyter environment.</p>
+<p>In addition, to the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object from <code class="docutils literal notranslate"><span class="pre">pyiron_atomistics</span></code> also the numerical library <code class="docutils literal notranslate"><span class="pre">numpy</span></code> and the visualization library <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> are imported. The <code class="docutils literal notranslate"><span class="pre">Project</span></code> object behaves like a folder on the file system and adds the capability to create other <code class="docutils literal notranslate"><span class="pre">pyiron</span></code> objects like atomistic structures and simulation jobs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span> 
+<span class="kn">from</span> <span class="nn">pyiron_atomistics</span> <span class="kn">import</span> <span class="n">Project</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "13cfcff3d04745c68e6095c136ec4d5a", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<section id="calculation">
+<h2>Calculation<a class="headerlink" href="#calculation" title="Link to this heading">#</a></h2>
+<p>As a first step the <code class="docutils literal notranslate"><span class="pre">sphinx</span></code> folder is created using the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object. To have a clean start all calculations in this folder are removed using the <code class="docutils literal notranslate"><span class="pre">remove_jobs()</span></code> function. This is typically not necessary, but it is a helpful command to restart fresh.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;sphinx&quot;</span><span class="p">)</span>
+<span class="n">pr</span><span class="o">.</span><span class="n">remove_jobs</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silently</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "dcf55097a97a43fabca98957d936e21b", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>In the second step, the primitive atomistic structure for Aluminium (Al) is created. In pyiron this is achieved using the <code class="docutils literal notranslate"><span class="pre">create.structure.ase.bulk()</span></code> function of the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object. To help with interactive development, python provides <code class="docutils literal notranslate"><span class="pre">tab</span></code> completion, so by typing <code class="docutils literal notranslate"><span class="pre">pr.create.</span></code> and pressing <code class="docutils literal notranslate"><span class="pre">tab</span></code> you get a list of available objects which can be created from the <code class="docutils literal notranslate"><span class="pre">Project</span></code>. The advantage of creating these objects from the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object is that the path of the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object is then automatically used for data storage, so the <code class="docutils literal notranslate"><span class="pre">structure</span></code> object directly knows it should write any data to the <code class="docutils literal notranslate"><span class="pre">path</span></code> of the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object. You can print the path of the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object using <code class="docutils literal notranslate"><span class="pre">pr.path</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">structure_Al</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">ase</span><span class="o">.</span><span class="n">bulk</span><span class="p">(</span><span class="s2">&quot;Al&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Depending on your version of Jupyterlab the <code class="docutils literal notranslate"><span class="pre">tab</span></code> based completion for multiple levels, might be disabled for security reasons, as it could be used to execute code before you pressing <code class="docutils literal notranslate"><span class="pre">shift+enter</span></code>. To enable this functionality again you can use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">config</span> <span class="n">IPCompleter</span><span class="o">.</span><span class="n">greedy</span><span class="o">=</span><span class="kc">True</span>
+</pre></div>
+</div>
+<p>Just copy the like to a cell at the beginning of your Jupyter notebook to enable <code class="docutils literal notranslate"><span class="pre">tab</span></code> based completion without any limits.</p>
+<p>For validation the structure object can be visualized using the <code class="docutils literal notranslate"><span class="pre">plot3d()</span></code> function, which internally uses <code class="docutils literal notranslate"><span class="pre">nglview</span></code> to visualise the atomic structure in the Jupyter notebook.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">structure_Al</span><span class="o">.</span><span class="n">plot3d</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "91010a979dcf44409ccaea12da6f30e7", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>After the creation of the <code class="docutils literal notranslate"><span class="pre">structure</span></code> object, the SPHInX <code class="docutils literal notranslate"><span class="pre">job</span></code> object can be created using the same <code class="docutils literal notranslate"><span class="pre">create()</span></code> function of the project object. After the creation of the <code class="docutils literal notranslate"><span class="pre">job</span></code> object, the <code class="docutils literal notranslate"><span class="pre">structure</span></code> object is assigned. Followed by the specification of the k-point mesh using the <code class="docutils literal notranslate"><span class="pre">set_kpoints()</span></code> function, the energy cutoff using the <code class="docutils literal notranslate"><span class="pre">set_encut()</span></code> function and the electronic convergence criteria using the <code class="docutils literal notranslate"><span class="pre">set_convergence_precision()</span></code> function. Finally, the computational resources can be assigned. In this case only a single computational core is selected, but typically such a calculation would be submitted to a high performance computing (HPC) cluster. Up to this point no data was written to the file system. Only when the <code class="docutils literal notranslate"><span class="pre">run()</span></code> function of the <code class="docutils literal notranslate"><span class="pre">job</span></code> object is executed <code class="docutils literal notranslate"><span class="pre">pyiron</span></code> writes the input files for the <code class="docutils literal notranslate"><span class="pre">SPHInX</span></code> DFT simulation code, calls the simulation code and parses the output of the calculation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job_Al</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">job</span><span class="o">.</span><span class="n">Sphinx</span><span class="p">(</span><span class="s2">&quot;spx&quot;</span><span class="p">)</span>
+
+<span class="c1"># select structure to compute </span>
+<span class="n">job_Al</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure_Al</span>
+
+<span class="c1"># specify precision of the DFT calculation </span>
+<span class="n">job_Al</span><span class="o">.</span><span class="n">set_kpoints</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">job_Al</span><span class="o">.</span><span class="n">set_encut</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">job_Al</span><span class="o">.</span><span class="n">set_convergence_precision</span><span class="p">(</span><span class="n">electronic_energy</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># define computational resources </span>
+<span class="n">job_Al</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">cores</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># execute simulation </span>
+<span class="n">job_Al</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job spx was saved and received the ID: 1827
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Link to this heading">#</a></h2>
+<p>When the calculation is successfully completed, the next step is to analyse the calculation results. Just like the setup of the calculation, in <code class="docutils literal notranslate"><span class="pre">pyiron</span></code> all these steps can be executed directly from the Jupyter notebook. In this way the Jupyter notebook behaves like a lab book in an experimental lab combining both, the input of the calculation and the output of the calculation in one document. To achieve reproducibility of these simulation protocols, the scientific input and the technical inputs are separated. For this demonstration the technical configuration, was installed in the beginning with the <code class="docutils literal notranslate"><span class="pre">pyiron-data</span></code> package, it contains the link to the SPHInX simulation code installed via conda, to allow new users to start right away. The scientific input is written in this notebook. In this way the notebook can be copied from one <code class="docutils literal notranslate"><span class="pre">pyiron</span></code> installation to another and still works as expected.</p>
+<p>In addition to the separation of technical and scientific configuration, it is typically also helpful to separate the setup of the calculation and the analysis. Especially in cases when the individual calculation take multiple days or even weeks. In this example the cells below can be executed independent of the calculation section. As a first step the previous calculation named <code class="docutils literal notranslate"><span class="pre">&quot;spx&quot;</span></code> is reloaded using the <code class="docutils literal notranslate"><span class="pre">load()</span></code> function of the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object and the electronic energy is aggegated in the <code class="docutils literal notranslate"><span class="pre">eng_lst</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;sphinx&quot;</span><span class="p">)</span>
+<span class="n">eng_lst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;spx&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">generic</span><span class="o">.</span><span class="n">dft</span><span class="o">.</span><span class="n">scf_energy_free</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/janssen/mambaforge/lib/python3.12/site-packages/pyiron_base/interfaces/lockable.py:59: LockedWarning: __setitem__ called on &lt;class &#39;pyiron_atomistics.sphinx.input_writer.Group&#39;&gt;, but object is locked!
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is important to mention that both the commands to setup the SPHInX calculation, as well as the commands used to analyse the output of the SPHInX calculation are independent of the specific simulation code. Basically, the same workflow would work with the VASP DFT code, as <code class="docutils literal notranslate"><span class="pre">pyiron</span></code> provides an abstract generic interface to different DFT codes to unify their interfaces.</p>
+<p>The electronic energy is plotted over the number of electronic steps with the energy on the y-axis and the number of electronic steps on the x-axis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eng_lst</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Electronic Convergence Steps&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Energy (eV)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Energy (eV)&#39;)
+</pre></div>
+</div>
+<img alt="_images/f8fdcd80181e02b854146d7d5d59ea198505eba2131698b8b93ca693e3422859.png" src="_images/f8fdcd80181e02b854146d7d5d59ea198505eba2131698b8b93ca693e3422859.png" />
+</div>
+</div>
+<p>The calculation seems to be converged after the first electronic step with only minimal changes afterwards. But this impression is caused by the misleading representation of the data. If we subtract the full converged energy at the last electronic steps <code class="docutils literal notranslate"><span class="pre">eng_lst[-1]</span></code> from all other energies and take the absolute of this difference <code class="docutils literal notranslate"><span class="pre">np.abs()</span></code> then we can plot is on a semi-logarithmic scale. This highlights the logarithmic convergence of the electronic structure, nearly linear with the number of steps in the semi-logarithmic plot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eng_lst</span><span class="o">-</span><span class="n">eng_lst</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Electronic Convergence Steps&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;$\Delta$ Energy (eV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+/tmp/ipykernel_32100/2630766026.py:3: SyntaxWarning: invalid escape sequence &#39;\D&#39;
+  plt.ylabel(&quot;$\Delta$ Energy (eV)&quot;)
+</pre></div>
+</div>
+<img alt="_images/0d2e148b96f99bf94f14eca7733d672c62938e374053af5724dd4483bb8c40a2.png" src="_images/0d2e148b96f99bf94f14eca7733d672c62938e374053af5724dd4483bb8c40a2.png" />
+</div>
+</div>
+<p>This example demonstrates that determening if a calculation is converged or not always depends on the convergence goal. A convergence of <span class="math notranslate nohighlight">\(10^{-3}\)</span> is already achived at the second electronic step while a convergence of <span class="math notranslate nohighlight">\(10^{-7}\)</span> in this case requires three electronic steps and so on.</p>
+</section>
+<section id="job-management">
+<h2>Job Management<a class="headerlink" href="#job-management" title="Link to this heading">#</a></h2>
+<p>In the background <code class="docutils literal notranslate"><span class="pre">pyiron</span></code> uses an Structured Query Language (SQL) database to keep track of the currently running and completed calculation. This has the advantage that old calculation can be reloaded using the <code class="docutils literal notranslate"><span class="pre">load()</span></code> function of the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object. Still it can also lead to confusion in the beginning when users try to update the input parameter of an existing calculation. The easiest way is to delete all calculation in a given <code class="docutils literal notranslate"><span class="pre">Project</span></code> using the <code class="docutils literal notranslate"><span class="pre">remove_jobs()</span></code> function as demonstrated in the beginning. Alternatively the <code class="docutils literal notranslate"><span class="pre">job</span></code> object can be reloaded and removed individually by calling the <code class="docutils literal notranslate"><span class="pre">remove()</span></code> function on the <code class="docutils literal notranslate"><span class="pre">job</span></code> object. Or to compare multiple calculation the user can simply choose a <code class="docutils literal notranslate"><span class="pre">job_name</span></code> different from <code class="docutils literal notranslate"><span class="pre">&quot;spx&quot;</span></code>. To get an overview or all <code class="docutils literal notranslate"><span class="pre">job</span></code> objects in a given project <code class="docutils literal notranslate"><span class="pre">pyiron</span></code> provides the <code class="docutils literal notranslate"><span class="pre">job_table()</span></code> function of the <code class="docutils literal notranslate"><span class="pre">Project</span></code> object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span><span class="o">.</span><span class="n">job_table</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>status</th>
+      <th>chemicalformula</th>
+      <th>job</th>
+      <th>subjob</th>
+      <th>projectpath</th>
+      <th>project</th>
+      <th>timestart</th>
+      <th>timestop</th>
+      <th>totalcputime</th>
+      <th>computer</th>
+      <th>hamilton</th>
+      <th>hamversion</th>
+      <th>parentid</th>
+      <th>masterid</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1827</td>
+      <td>finished</td>
+      <td>Al</td>
+      <td>spx</td>
+      <td>/spx</td>
+      <td>None</td>
+      <td>/home/janssen/notebooks/2024/2024-09-02-susmet-lecture/sphinx/</td>
+      <td>2024-09-03 12:30:12.018873</td>
+      <td>2024-09-03 12:30:14.742192</td>
+      <td>2.0</td>
+      <td>pyiron@cmpc06#1</td>
+      <td>Sphinx</td>
+      <td>3.1</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>While for bulk structures electronic convergence is quickly achieved, for more complex chemical structures, surfaces or defects electronic convergence can be much more challenging. So it is important to carefully check the electronic convergence for every calculation.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="README.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Density Functional Theory Lecture</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2-dft-energy-precision.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Planewave Energy Cut-off and Kpoint Mesh</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation">Calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis">Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#job-management">Job Management</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jan Janssen
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

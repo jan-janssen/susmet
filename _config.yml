@@ -5,7 +5,7 @@ execute:
   execute_notebooks           : off
 
 repository:
-    url                       : https://github.com/janssenlab/2024-SusMet-Density-Functional-Theory-lecture
+    url                       : https://github.com/janssenlab/2024-SusMet-Density-Functional-Theory-Lecture
     path_to_book              : ""
 
 launch_buttons:
